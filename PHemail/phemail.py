@@ -4,7 +4,7 @@
 #it is then all sent out to the recipients in the list in the config file
 #and the sender is the "from" element in the file.
 
-import datetime #time module in python. allows for datetime objects to be 
+import datetime #time module in python. allows for datetime objects to be
 import MySQLdb #the sql connector client
 import emailattempt as mail #my module for emailing
 import pprint #just a module for printing more clearly, makes lists print nicer
@@ -49,13 +49,18 @@ dateline="="+current.strftime("'%Y-%m-%d'")
 
 message=''
 
+message+='Room, Rack, pH, DO, Temp, PPM, Initials, Date'
+
 for i in Rows:
     message+='\n'
     message+=str(i)+'\n'
-    executeline="select * from waterreadings where\
- Rack="+str(i)+" and Date(Date)"+dateline
+    executeline="select Room, Rack, pH, DO, Temp, PPM, Initials, Date(Date) from\
+ waterreadings where Rack="+str(i)+" and Date(Date)"+dateline
     cursor.execute(executeline)
-    message+=str(cursor.fetchall())
+    current=list(cursor.fetchall()[0])
+    current[7]=current[7].strftime("%m/%d/%Y")
+    for i in range(len(current)):
+        message+=str(current[i])+",   "
 
 pprint.pprint(message)
 
