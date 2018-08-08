@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8">
+<report>
+  <email category="sending">
+    <sender>bhufnagle@zeabio.com</sender>
+    <tto>bhufnagle@zeabio.com, dparlato@zeabio.com, jwilson@zeabio.com, tschutz@zeabio.com</tto>
+    <login>bhufnagle@zeabio.com</login>
+    <password>temp$1234</password>
+    <subject>pH, PPM, DO, Temp daily report</subject>
+  </email>
+
+
+  <database category="info">
+    <hostname>localhost</hostname>
+    <user>bhufnagle</user>
+    <password>p1assword</password>
+    <dbname>datacollection</dbname>
+    <tablename>waterreadings</tablename>
+    <factors>Lights,Plants,WaterFlow,Reservoir50,Pumps,IPM,Airators,NoDripsLeaks,Risers</factors>
+    <rows>1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18</rows>
+    <date>Today</date>
+  </database>
+</report>
