@@ -515,7 +515,8 @@ mments,Airators_comments,NoDripsLeaks_comments,Risers_comments,Initials,Day,Date
 VALUES """ + mysqlholdingstring)
 
         self.db.commit()
-
+        #this is the last action before the submit function complete
+        #so if the cells do not clear then there was some error before here
         self.clearcells()
 
 
