@@ -5,7 +5,7 @@ import pprint
 import time
 start_time = time.time()
 sender="bhufnagle@zeabio.com"
-tto=["bhufnagle@zeabio.com", "tschutz@zeabio.com", "jwilson@zeabio.com"]
+tto=["bhufnagle@zeabio.com", "dparlato@zeabio.com", "tschutz@zeabio.com", "jwilson@zeabio.com"]
 login="bhufnagle@zeabio.com"
 password_email="temp$1234"
 subject=" report"
@@ -61,7 +61,7 @@ for i in range(len(ListOfFactors)):
             if message!=lastmessage:
                 message=message+'\n'
 
-        message=message+'\n\n'  
+        message=message+'\n\n'
 
 #pprint.pprint(message)
 
@@ -70,7 +70,7 @@ for i in range(len(ListOfFactors)):
     #if type(message[i])!= str:
     #    try :
    #         message[i]=list(message[i])
-  #      except : 
+  #      except :
  #           1+1
 #print(message)
 #for i in range(len(message)):
@@ -94,4 +94,4 @@ x=time.time()
 print ("---- %s seconds-----" %(x - start_time))
 pprint.pprint (message)
 print (tto)
-mail.outlooksimple(sender, tto, login, password_email, DayofWeek+subject, False, str(message)) 
+mail.outlooksimple(sender, tto, login, password_email, DayofWeek+subject, False, str(message))

@@ -10,7 +10,7 @@ class Data_entry:
         master.title("Grow Room water readings")
 
 
-        
+
         #Labels
         self.emptylabel = Label(master, text="")
         self.secondempty = Label(master, text="")
@@ -24,7 +24,7 @@ class Data_entry:
         self.DOlab = Label(master, text="Dissolved Oxygen(should be close to 8): "\
                            )
         self.templab = Label(master, text="Temperature(should be close to 72): ")
-        
+
         #Entry boxes
         vcmd = master.register(self.validate) # validate command for int inputs
         commentvcmd = master.register(self.commentvalidate) #validate command for str inputs(worker, rack, room, comments)
@@ -44,8 +44,8 @@ class Data_entry:
                                                                    '%P'))
         self.temp = Entry(master, validate="key", validatecommand = (floatvcmd,\
                                                                      '%P'))
-        
-        
+
+
 
         #Submit button
         self.submit_button = Button(master, text="Submit", command=lambda:\
@@ -55,13 +55,13 @@ class Data_entry:
                                     lambda: self.sendreport())
         #self.report_button = Button(master, text="Send Email Report",\
                                    # command=lambda: self.sendreport())
-        
+
         # LAYOUT
         self.workerlab.grid(row=0, column=0, columnspan=2, sticky=W+E)
 
         self.worker.grid(row=1, column=0, columnspan=1, sticky=W+E)
         #self.emptylabel.grid(row=1, column=3)
-        
+
         self.roomlab.grid(row=3, column=0)
         self.room.grid(row=3, column=3, columnspan=1, sticky=W+E)
 
@@ -74,18 +74,18 @@ class Data_entry:
         self.ppmlab.grid(row=12, column=0)
         self.ppm.grid(row=12, column=3, columnspan=1, sticky=W+E)
 
-        self.DOlab.grid(row=15, column=0)
-        self.DO.grid(row=15, column=3, columnspan=1, sticky=W+E)
-        
-        self.templab.grid(row=18, column=0)
-        self.temp.grid(row=18, column=3, columnspan=1, sticky=W+E)
+        self.DOlab.grid(row=18, column=0)
+        self.DO.grid(row=18, column=3, columnspan=1, sticky=W+E)
+
+        self.templab.grid(row=15, column=0)
+        self.temp.grid(row=15, column=3, columnspan=1, sticky=W+E)
 
         self.submit_button.grid(row=21, column=3, sticky=W+E)
         self.report_button.grid(row=25, column=0, sticky=W+E)
-        
+
         #self.reportlab.grid(row=28, column=0, columnspan=2, sticky=W+E)
         #self.report_button.grid(row=29, column=0, columnspan=2, sticky=W+E)
-        
+
         master.grid_columnconfigure(0, minsize=200, weight=1)
         master.grid_columnconfigure(3, minsize=30, weight=1)
 
@@ -103,15 +103,15 @@ class Data_entry:
 
     def errorhandle(self):          #error message showing
         self.errorlab.grid(row=16, column=1, columnspan=2, sticky=W)
-    
+
     def commentvalidate(self, new_text):
-        self.errorclear()           
+        self.errorclear()
         try:
             str(new_text)           #ensures input can be made into string
             return True
         except ValueError:
             return False
-    
+
     def validate(self, new_text):
         self.errorclear()
         if not new_text:
@@ -124,7 +124,7 @@ class Data_entry:
         except ValueError:
             self.errorhandle()
             return False
-        
+
     def validatefloat(self, new_text):
         if not new_text:
             return True
@@ -153,7 +153,7 @@ class Data_entry:
         self.temp.delete(0, END)
         return
 
-    def sendreport(self):    #Currently, this can only be called once per 
+    def sendreport(self):    #Currently, this can only be called once per
         try:
             imp.reload(phemail)
         except:
@@ -168,7 +168,7 @@ class Data_entry:
             return
         if self.room.get()==self.workerempty:
             return
-        
+
         racknum=list(self.rack.get())
         for i in range(len(racknum)):
             if ord(racknum[i])==92:
@@ -180,7 +180,7 @@ class Data_entry:
             if racknum[i]=="'":
                 racknum[i]='snglquote'
         racknum="'"+"".join(racknum)+"'"
-                
+
         roomnum=list(self.room.get())
         for i in range(len(roomnum)):
             if ord(roomnum[i])==92:
@@ -192,7 +192,7 @@ class Data_entry:
             if roomnum[i]=="'":
                 roomnum[i]='snglquote'
         roomnum="'"+"".join(roomnum)+"'"
-        
+
 
         #MySQL doesnt allow empty inputs in the fields, so need to set empty
         #entry boxes as null
@@ -200,7 +200,7 @@ class Data_entry:
         ppm=self.ppm.get().replace(' ','')
         pH=self.pH.get().replace(' ','')
         DO=self.DO.get().replace(' ','')
-        temp=self.temp.get().replace(' ','')        
+        temp=self.temp.get().replace(' ','')
         print (pH)
 
         if self.pH.get()==self.emptynum:
@@ -212,8 +212,8 @@ class Data_entry:
         if self.temp.get()==self.emptynum:
             temp='NULL'
 
-        
-        
+
+
         holdingstring = roomnum + ',' + racknum\
                         + ','+ pH + ',' + ppm + ',' + DO + ',' + temp
 
@@ -227,13 +227,13 @@ class Data_entry:
                 worker[i]='dblquote'
             if worker[i] == "'":
                 worker[i]= 'snglquote'
-            
+
         worker="".join(worker)
 
         holdingstring += ",'" + worker + "',"#concatenate worker at end, and add new line character
-        
+
         timestamp=datetime.datetime.now().strftime("'%A','%Y-%m-%d %H:%M:%S'") #keeps DoW, date, H:M:S from date obj
-        
+
         holdingstring+= timestamp#concats all data with timestamp
         mysqlholdingstring=holdingstring
         holdingstring+="\n"
@@ -247,20 +247,19 @@ class Data_entry:
         #mysqlholdingstring = "".join(mysqlholdingstring)
         print (mysqlholdingstring)
 
-        
+
         #SQL input string to be run
         self.cursor.execute("""INSERT INTO waterreadings (Room,Rack,\
 pH, PPM, DO, Temp, Initials, Day, Date) VALUES """ + mysqlholdingstring)
-        
+
         self.db.commit()
-        
-        
+
+
         self.clearcells()
-        
-        
+
+
 root=Tk()
 
 my_gui=Data_entry(root)
 
 root.mainloop()
-
