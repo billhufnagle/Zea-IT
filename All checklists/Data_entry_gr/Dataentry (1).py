@@ -1,3 +1,7 @@
+#GUI application for data entry from the grow room checklist
+#Writes to .csv file as well as the growroomwalkthrough table
+# in the datacollection database on the "Dataentrylaptop"
+#
 from tkinter import *
 import datetime
 import MySQLdb
@@ -8,20 +12,7 @@ class Data_entry:
         self.master = master
         master.title("Grow Room Data Entry")
 
-        #self.rackval=""
-        #self.ltsval=""
-        #self.pltsval=""
-        #self.wtrflwval=""
-        #self.res50val=""
-        #self.pmpsval=""
-        #self.ipmval=""         Might use these at another time
-        #self.airval=""         to check if input is there
-        #self.drpleakval=""
-        #self.riserval=""
-        #self.commentsval=""
-        #self.riserholding=""
 
-        
         #Labels
         self.emptylabel = Label(master, text="")
         self.secondempty = Label(master, text="")
@@ -35,7 +26,7 @@ class Data_entry:
         self.res50lab = Label(master, text="Reservoir > 50%: ")
         self.pmpslab = Label(master, text="Pumps: ", bg="white")
         self.ipmlab = Label(master, text="IPM(1,2,3): ")
-        self.airlab = Label(master, text="Airators: ", bg="white") 
+        self.airlab = Label(master, text="Airators: ", bg="white")
         self.drpleaklab = Label(master, text="No Drips/Leaks: ")
         self.riserlab = Label(master, text="Risers: ", bg="white")
         self.commentslab = Label(master, text="---Comments---")
@@ -64,7 +55,7 @@ Discolored, Wilted, Brown tipped roots, Brown Roots")
         self.dripskey = Label(master, text = "Drips: Observations. Why?")
         self.reportlab = Label(master, text = "Only send report when you have \
 finished SUBMITTING all Racks", bg="navy", fg="white")
-        
+
         #Entry boxes
         vcmd = master.register(self.validate) # validate command for int inputs
         commentvcmd = master.register(self.commentvalidate) #validate command for str inputs(worker, rack, room, comments)
@@ -96,13 +87,14 @@ finished SUBMITTING all Racks", bg="navy", fg="white")
         self.submit_button = Button(master, text="Submit", command=lambda: self.submit())
         self.report_button = Button(master, text="Send Email Report",\
                                     command=lambda: self.sendreport())
-        
+
         # LAYOUT
+
         self.workerlab.grid(row=0, column=0, columnspan=3, sticky=W+E)
 
         self.worker.grid(row=1, column=0, columnspan=2, sticky=W+E)
         self.emptylabel.grid(row=1, column=3)
-        
+
         self.roomlab.grid(row=2, column=0)
         self.room.grid(row=2, column=1, columnspan=1, sticky=W+E)
 
@@ -110,13 +102,12 @@ finished SUBMITTING all Racks", bg="navy", fg="white")
         self.rack.grid(row=3, column=1, columnspan=1, sticky=W+E)
 
         self.secondlegend.grid(row=4, column=2)
-        #self.secondempty.grid(row=4, column=0, columnspan=2)
 
         self.daily.grid(row=5, column=0)
         self.weekend.grid(row=5, column=1)
         self.seconddont.grid(row=5, column=2)
         self.commentslab.grid(row=5, column=4)
-        
+
         self.ltslab.grid(row=6, column=0, sticky=W+E)
         self.ltsignore.grid(row=6, column=1, sticky=W+E)
         self.lts.grid(row=6, column=2, columnspan=1, sticky=W+E)
@@ -130,7 +121,7 @@ finished SUBMITTING all Racks", bg="navy", fg="white")
         self.wtrflwlab.grid(row=8, column=0, sticky=W+E)
         self.weekendmaniflw.grid(row=8, column=1, sticky=W+E)
         self.wtrflw.grid(row=8, column=2, columnspan=1, sticky=W+E)
-        self.wtrflwcmnt.grid(row=8, column=4, columnspan=1, sticky=W+E) 
+        self.wtrflwcmnt.grid(row=8, column=4, columnspan=1, sticky=W+E)
 
         self.res50lab.grid(row=9, column=0, sticky=W+E)
         self.res50ignore.grid(row=9, column=1, sticky=W+E)
@@ -179,7 +170,7 @@ finished SUBMITTING all Racks", bg="navy", fg="white")
 
         self.reportlab.grid(row=28, column=0, columnspan=2, sticky=W+E)
         self.report_button.grid(row=29, column=0, columnspan=2, sticky=W+E)
-        
+
         master.grid_columnconfigure(0, minsize=200, weight=1)
         master.grid_columnconfigure(1, minsize=50, weight=1)
         master.grid_columnconfigure(2, minsize=50, weight=2)
@@ -187,28 +178,38 @@ finished SUBMITTING all Racks", bg="navy", fg="white")
         master.grid_columnconfigure(4, weight=2)
 
         self.errorclear()
-        self.workerempty=self.worker.get()
+        #set for the dataentry laptop accessing the datacollection db
         self.db = MySQLdb.connect("localhost", "root", "password", "datacollection")
 
         self.cursor = self.db.cursor()
 
-        #Empty checkers
+        #Empty checkers used to see if an input is empty, so it can be
+        #appropriately stored in the DB as a NULL
         self.emptynumb = self.lts.get()
         self.emptycmnt = self.ltscmnt.get()
-    def errorclear(self):           #Error message removal
+    #method used to remove the error message from the window, grid_forget
+    #causes an object to lose its spot on the tkinter grid
+    def errorclear(self):
         self.errorlab.grid_forget()
 
+    #method to redisplay the error label when an incorrect key input is
+    #noticed. basically opposite of above method
     def errorhandle(self):          #error message showing
         self.errorlab.grid(row=16, column=1, columnspan=2, sticky=W)
-    
+    #each tkinter input box can use a method to validate any inputs
+    #with this, we are checking to make sure that the new text is able to
+    #form a string
     def commentvalidate(self, new_text):
-        self.errorclear()           
+        self.errorclear()
         try:
             str(new_text)           #ensures input can be made into string
             return True
         except ValueError:
             return False
-    
+    #this validate is used for any integer input to ensure that no characters
+    #other than the 10 digits are accepted into the entry box, as that would
+    #cause errors with the database table as it tried to put anything other
+    #than an int into the cell
     def validate(self, new_text):
         self.errorclear()
         if not new_text:
@@ -221,7 +222,9 @@ finished SUBMITTING all Racks", bg="navy", fg="white")
         except ValueError:
             self.errorhandle()
             return False
-
+    #method used to clear out the entry boxes, doesnt clear the worker Initials
+    #entry or the room number, this was to save time for the person using the
+    #program
     def clearcells(self):
         #self.worker.delete(0, END) #commenting this out because the initials should stay same
                                     #almost every time, can still be manually deleted
@@ -246,17 +249,28 @@ finished SUBMITTING all Racks", bg="navy", fg="white")
         self.riser.delete(0, END)
         self.risercmnt.delete(0, END)
         return
+    #method for sending report, does so on button press of the submit Button
+    #importing a module can only be done once per program, as far as I know
+    #so, the program needs to be closed before a report can be sent again
+    def sendreport(self):
+        import report
 
-    def sendreport(self):    #Currently, this can only be called once per 
-        import report        #instance of the tkinter window, need to find
-                             #how to unimport, so the function is re-called
-
+    #submit method for the data into the database and the csv file
+    #will only submit if the rack and initials entries are not empty
+    #other entries are allowed to be empty because of possibly unused
+    #racks
+    #the method takes all of the inputs and concatenates them into a string
+    #separated by commas for input to the .csv file, as well as inputing them
+    #all into the database
     def submit(self):
         if self.worker.get()==self.workerempty:
             return
         if self.rack.get()==self.workerempty:
             return
-        
+
+        #this same loop is needed for any input that isn't strictly numbers
+        #so that there are no commas which would cause errors in sql, no quotes
+        #and backslashes as they could allow sql injection issues
         racknum=list(self.rack.get())
         for i in range(len(racknum)):
             print(racknum[i])
@@ -269,7 +283,7 @@ finished SUBMITTING all Racks", bg="navy", fg="white")
             if racknum[i]=="'":
                 racknum[i]='snglquote'
         racknum="'"+"".join(racknum)+"'"
-                
+
         roomnum=list(self.room.get())
         for i in range(len(roomnum)):
             if ord(roomnum[i])==92:
@@ -281,7 +295,7 @@ finished SUBMITTING all Racks", bg="navy", fg="white")
             if roomnum[i]=="'":
                 roomnum[i]='snglquote'
         roomnum="'"+"".join(roomnum)+"'"
-        
+
 
         #MySQL doesnt allow empty inputs in the fields, so need to set empty
         #entry boxes as null
@@ -295,7 +309,7 @@ finished SUBMITTING all Racks", bg="navy", fg="white")
         air=self.air.get()
         drpleak=self.drpleak.get()
         risers=self.riser.get()
-        
+
         if self.rack.get()==self.emptycmnt:
             racknum='NULL'
         if self.room.get()==self.emptycmnt:
@@ -320,9 +334,9 @@ finished SUBMITTING all Racks", bg="navy", fg="white")
             risers='NULL'
         print(drpleak)
         print (self.air.get())
-        
-        
-        
+
+
+
         holdingstring = roomnum + ',' + racknum\
                         + "," + lts + "," + plts\
                         +","+wtrflw+","+res50+","+\
@@ -340,7 +354,7 @@ finished SUBMITTING all Racks", bg="navy", fg="white")
             if ltscmnt[i]=="'":
                 ltscmnt[i]='snglquote'
         ltscmnt="'"+"".join(ltscmnt)+"'"
-        
+
         pltscmnt=list(self.pltscmnt.get())
         for i in range(len(pltscmnt)):
             if ord(pltscmnt[i])==92:
@@ -437,6 +451,8 @@ finished SUBMITTING all Racks", bg="navy", fg="white")
                 risercmnt[i]='snglquote'
         risercmnt="'"+"".join(risercmnt)+"'"
 
+        #need to check each entry to make sure it isn't empty, as that would
+        #cause an error when trying to input to the database
         if self.ltscmnt.get()==self.emptycmnt:
             ltscmnt='NULL'
         if self.pltscmnt.get()==self.emptycmnt:
@@ -471,13 +487,13 @@ finished SUBMITTING all Racks", bg="navy", fg="white")
                 worker[i]='dblquote'
             if worker[i] == "'":
                 worker[i]= 'snglquote'
-            
+
         worker="".join(worker)
 
         holdingstring=holdingstring + ",'" + worker + "',"#concatenate worker at end, and add new line character
-        
+
         timestamp=datetime.datetime.now().strftime("'%A','%Y-%m-%d %H:%M:%S'") #keeps DoW, date, H:M:S from date obj
-        
+
         holdingstring+= timestamp#concats all data with timestamp
         mysqlholdingstring=holdingstring
         holdingstring+="\n"
@@ -497,18 +513,12 @@ Plants,WaterFlow,Reservoir50,Pumps,IPM,Airators,NoDripsLeaks,Risers,Lights_comme
 ts,Plants_comments,WaterFlow_comments,Reservoir50_comments,Pumps_comments,IPM_co\
 mments,Airators_comments,NoDripsLeaks_comments,Risers_comments,Initials,Day,Date)\
 VALUES """ + mysqlholdingstring)
-                            #(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,\
-#%s, %s, %s, %s, %s, %s, %s, %s, %s)""" % (mysqlholdingstring[i] for \
- #                                    i in range(len(mysqlholdingstring))))
+
         self.db.commit()
-        #except MySQLdb.MySQLError:
-        #    self.db.rollback()
-        #    print ("error somewhere")
-        #except
-        
+
         self.clearcells()
-        
-        
+
+
 root=Tk()
 
 my_gui=Data_entry(root)
