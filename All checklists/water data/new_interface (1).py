@@ -21,9 +21,9 @@ class Data_entry:
         self.racklab = Label(master, text="Rack number: ")
         self.pHlab = Label(master, text="pH(should be between 5.4 and 6.2): ")
         self.ppmlab = Label(master, text="PPM(should be between 800 and 1000): ")
-        self.DOlab = Label(master, text="Dissolved Oxygen(should be between ): "\
+        self.DOlab = Label(master, text="Dissolved Oxygen(should be close to 8): "\
                            )
-        self.templab = Label(master, text="Temperature(should be between ): ")
+        self.templab = Label(master, text="Temperature(should be close to 72): ")
         
         #Entry boxes
         vcmd = master.register(self.validate) # validate command for int inputs
