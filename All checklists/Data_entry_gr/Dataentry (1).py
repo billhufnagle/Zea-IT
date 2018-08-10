@@ -6,6 +6,11 @@ from tkinter import *
 import datetime
 import MySQLdb
 
+#creates a class which will become our application
+#inside of this we make our application, first with Labels, then entry boxes,
+#then buttons, then we place them on the grid LAYOUT
+#and then ultimately we creates the methods to be used on text entry or button
+#press
 class Data_entry:
 
     def __init__(self, master):
@@ -519,7 +524,7 @@ VALUES """ + mysqlholdingstring)
         #so if the cells do not clear then there was some error before here
         self.clearcells()
 
-
+#this creates a top level window which we will use as the basis for our whole application
 root=Tk()
 
 my_gui=Data_entry(root)

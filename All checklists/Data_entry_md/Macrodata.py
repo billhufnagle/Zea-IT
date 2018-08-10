@@ -1,3 +1,6 @@
+#A GUI for taking the grow room, cold room, and processing room data
+#
+
 from tkinter import *
 import datetime
 import MySQLdb
@@ -21,7 +24,7 @@ class Data_entry:
         #self.commentsval=""
         #self.riserholding=""
 
-        
+
         #Labels
         self.emptylabel = Label(master, text="")
         self.secondempty = Label(master, text="")
@@ -43,7 +46,7 @@ class Data_entry:
         self.cldrmlab = Label(master, text="--Cold Room--")
         self.instrlab = Label(master, text="Only do one column at a time!", bg="red", fg="white")#, bg="white")
         self.comments = Label(master, text = "--Comments--")
-        
+
         #Entry boxes
         vcmd = master.register(self.validate)
         commentvcmd = master.register(self.commentvalidate)
@@ -130,9 +133,9 @@ class Data_entry:
         self.cursor = self.db.cursor()
         self.initialshold=self.initials.get()
     #Methods
-        
 
-    def commentvalidate(self, new_text):          
+
+    def commentvalidate(self, new_text):
         if not new_text:
             return True
         try:
@@ -202,7 +205,7 @@ class Data_entry:
                 initials[i]= 'snglquote'
         initials="'"+"".join(initials)+"'"
         if self.option.get() == "GrowRoom":
-            
+
             grwrm=list(self.grwrm.get())
             excesscmnt=list(self.excesscmnt.get())
             co2cmnt=list(self.co2cmnt.get())
@@ -219,7 +222,7 @@ class Data_entry:
                 if grwrm[i] == "'":
                     grwrm[i]= 'snglquote'
             grwrm="'"+"".join(grwrm)+"'"
-            
+
             for i in range(len(excesscmnt)):
                 if ord(excesscmnt[i])==92:
                     excesscmnt[i]='backslash'
@@ -239,7 +242,7 @@ class Data_entry:
                 if co2cmnt[i]=='"':
                     co2cmnt[i]='dblquote'
                 if co2cmnt[i] == "'":
-                    co2cmnt[i]= 'snglquote'                
+                    co2cmnt[i]= 'snglquote'
             co2cmnt="'"+"".join(co2cmnt)+"'"
 
             for i in range(len(grwtempcmnt)):
@@ -269,7 +272,7 @@ class Data_entry:
             grwtemp=self.grwtemp.get()
             humid=self.humid.get()
 
-            
+
             if self.grwrm.get()==self.emptycmnt:
                 grwrm='NULL'
             if self.excess.get()==self.emptynum:
@@ -288,8 +291,8 @@ class Data_entry:
                 grwtempcmnt='NULL'
             if self.humidcmnt.get()==self.emptycmnt:
                 humidcmnt='NULL'
-            
-            
+
+
             holdingstring=""+grwrm+','+excess+','\
                            +co2+','+grwtemp+','+\
                            humid+','+excesscmnt+','\
@@ -311,9 +314,9 @@ Humidity_comments, Initials, Day, Date) VALUES """ + mysqlstring)
             self.db.commit()
             self.clearcells()
 
-            
+
         elif self.option.get() == "ProcessingRoom":
-            
+
             procrm=list(self.procrm.get())
             cornercmnt=list(self.cornercmnt.get())
             corner=self.corner.get()
@@ -341,12 +344,12 @@ Humidity_comments, Initials, Day, Date) VALUES """ + mysqlstring)
             cornercmnt="'"+"".join(cornercmnt)+"'"
 
             if self.procrm.get()==self.emptycmnt:
-                procrm='NULL' 
+                procrm='NULL'
             if self.cornercmnt.get()==self.emptycmnt:
                 cornercmnt='NULL'
             if self.corner.get()==self.emptynum:
                 corner='NULL'
-            
+
             holdingstring=procrm+", "+ corner+", "\
                            +cornercmnt+", "+\
                             initials+","
@@ -364,13 +367,13 @@ off, Cornervalves_comments, Initials, Day, Date) VALUES """ + mysqlstring)
 
             self.db.commit()
             self.clearcells()
-            
+
         elif self.option.get() == "ColdRoom":
-            
+
             cldrm=list(self.cldrm.get())
             cldtempcmnt=list(self.cldtempcmnt.get())
 
-            
+
 
             for i in range(len(cldrm)):
                 if ord(cldrm[i])==92:
@@ -382,7 +385,7 @@ off, Cornervalves_comments, Initials, Day, Date) VALUES """ + mysqlstring)
                 if cldrm[i] == "'":
                     cldrm[i]= 'snglquote'
             cldrm="'"+"".join(cldrm)+"'"
-            
+
             for i in range(len(cldtempcmnt)):
                 if ord(cldtempcmnt[i])==92:
                     cldtempcmnt[i]='backslash'
@@ -395,14 +398,14 @@ off, Cornervalves_comments, Initials, Day, Date) VALUES """ + mysqlstring)
             cldtempcmnt="'"+"".join(cldtempcmnt)+"'"
 
             cldtemp=self.cldtemp.get()
-            
+
             if self.cldrm.get()==self.emptycmnt:
                 cldcrm='NULL'
             if self.cldtempcmnt.get()==self.emptycmnt:
                 cldtempcmnt='NULL'
             if self.cldtemp.get()==self.emptynum:
                 cldtemp='NULL'
-            
+
             holdingstring=cldrm+", "+cldtemp+', '+cldtempcmnt+', '+\
                            initials+','
             time=datetime.datetime.now().strftime(" '%A', '%Y-%m-%d %H:%M:%S'")
@@ -422,7 +425,7 @@ off, Cornervalves_comments, Initials, Day, Date) VALUES """ + mysqlstring)
 
 
         #print (mysqlstring)
-        
+
 
 
 
