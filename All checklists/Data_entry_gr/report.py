@@ -24,11 +24,9 @@ Rack=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
 Room=[1]
 
 db = MySQLdb.connect(hostname, user, password_db, dbname)
-open('tempfile.txt','w')
 cursor=db.cursor()
 message=''
 now=str(datetime.datetime.now().strftime('%Y-%m-%d'))
-tempfile=open('tempfile.txt', 'w')
 DayofWeek=datetime.datetime.now().strftime('%A')
 print (DayofWeek)
 for i in range(len(ListOfFactors)):
@@ -54,8 +52,6 @@ for i in range(len(ListOfFactors)):
                 #print (next)
                 new+=next[0]+ ' '+str(next[1])+' '+ next[2].strftime\
                       ('%Y-%m-%d %H:%M:%S')+'\n'
-                #tempfile.write(str(new))
-                #tempfile.write('\n')
                 if message!= message+new:
                     message=message+new
             if message!=lastmessage:
@@ -89,7 +85,6 @@ for i in range(len(ListOfFactors)):
 
 #print(message)
 
-tempfile.close()
 x=time.time()
 print ("---- %s seconds-----" %(x - start_time))
 pprint.pprint (message)
