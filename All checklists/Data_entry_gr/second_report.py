@@ -20,7 +20,7 @@ ListOfFactors=["Lights", "Plants", "WaterFlow", "Reservoir50", "Pumps", "IPM",\
                "Airators", "NoDripsLeaks", "Risers"]
 NumbToNote=[[1],[1],[1],[1],[1],[2,3],[1],[1],[1]]
 Rows=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
-Date='Today'
+Date='Today'#this line of code decides the 
 
 db = MySQLdb.connect(hostname, user, password_db, dbname)
 open('tempfile.txt','w')
