@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8">
+<!-- xml config files can hold any data in string form. I
+recommend staying away from nested lists, but it is not impossible
+to use them, I did here with "threshold numbers".
+The basic style is one main element tag to cover the whole
+of the information area, followed by lower level sections, and then ultimately
+down to individual categories and elements which will hold the data for use
+ here, report is the highest level tag for the file
+  within it we have <email> and <database>, the two sections of use for this
+  data, -->
+<!--xml tags just need to surround your data that you wish to pass in
+to the program, these tags will be how you refer to the data in the file
+inside of your program
+
+So basic structure:
+
+<general tag>
+  <inner, more specific tag>
+    <lower level/data item tag>data to use</lower level/data item tag>
+    or
+    <lower level>
+      data to use
+    </lower level>
+  </inner, more specific tag>
+</general tag>
+
+-->
+
+
+<report>
+
+  <email category="sending">
+    <sender>bhufnagle@zeabio.com</sender>
+    <tto>bhufnagle@zeabio.com</tto>
+    <login>bhufnagle@zeabio.com</login>
+    <password>temp$1234</password>
+    <subject>Weekly/monthly/quarterly/yearly report</subject>
+  </email>
+
+  <database category="info">
+    <hostname>dataentrylaptop</hostname><!--only works from a laptop Where
+    dataentrylaptop is saved in etc\hosts file-->
+    <user>bhufnagle</user>
+    <password>p1assword</password>
+    <dbname>datacollection</dbname>
+    <tablename>growroomwalkthrough</tablename>
+    <factors>Lights,Plants,WaterFlow,Reservoir50,Pumps,IPM,Airators,NoDripsLeaks,Risers</factors>
+    <threshold_numbers>[1],[1],[1],[1],[1],[2,3],[1],[1],[1]</threshold_numbers>
+    <rows>1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18</rows>
+    <date>Week</date>
+  </database>
+
+</report>

@@ -4,7 +4,7 @@
 #it is then all sent out to the recipients in the list in the config file
 #and the sender is the "from" element in the file.
 
-import datetime #time module in python. allows for datetime objects to be 
+import datetime #time module in python. allows for datetime objects to be
 import MySQLdb #the sql connector client
 import emailattempt as mail #my module for emailing
 import pprint #just a module for printing more clearly, makes lists print nicer
@@ -37,7 +37,6 @@ user=config.database.user.text
 password_db=config.database.password.text
 dbname=config.database.dbname.text
 Rows=rowslist
-Date=config.database.date.text
 
 db = MySQLdb.connect(hostname, user, password_db, dbname)
 
