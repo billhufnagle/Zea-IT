@@ -5,10 +5,13 @@ to use them, I did here with "threshold numbers".
 The basic style is one main element tag to cover the whole
 of the information area, followed by lower level sections, and then ultimately
 down to individual categories and elements which will hold the data for use
- here, report is the highest level tag for the file
-  within it we have <email> and <database>, the two sections of use for this
-  data, -->
-<!--xml tags just need to surround your data that you wish to pass in
+
+
+here, report is the highest level tag for the file
+within it we have <email> and <database>, the two sections of use for this
+data
+
+xml tags just need to surround your data that you wish to pass in
 to the program, these tags will be how you refer to the data in the file
 inside of your program
 
