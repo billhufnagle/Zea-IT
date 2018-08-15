@@ -12,7 +12,7 @@ file=False
 message="This is where the info will be"
 
 
-hostname="dataentrylaptop"
+hostname="databaseserver"
 user="bhufnagle"
 password_db="p1assword"
 dbname="datacollection"
@@ -20,7 +20,7 @@ ListOfFactors=["Lights", "Plants", "WaterFlow", "Reservoir50", "Pumps", "IPM",\
                "Airators", "NoDripsLeaks", "Risers"]
 NumbToNote=[[1],[1],[1],[1],[1],[2,3],[1],[1],[1]]
 Rows=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
-Date='Today'#this line of code decides the 
+Date='Today'#this line of code decides the
 
 db = MySQLdb.connect(hostname, user, password_db, dbname)
 open('tempfile.txt','w')
@@ -41,7 +41,7 @@ for i in range(len(ListOfFactors)):
             linetoexec=linetoexec+ListOfFactors[i]+"="
             linetoexec+=str(NumbToNote[i][j])
             linetoexec+=" And Rack="+str(k)+" And Date(Date)="+'"'
-            
+
 
 
             linetoexec+='"'+" Order By Rack, Date;"
@@ -62,7 +62,7 @@ for i in range(len(ListOfFactors)):
             if message!=lastmessage:
                 message=message+'\n'
 
-        message=message+'\n\n'  
+        message=message+'\n\n'
 
 pprint.pprint(message)
 
@@ -71,7 +71,7 @@ pprint.pprint(message)
     #if type(message[i])!= str:
     #    try :
    #         message[i]=list(message[i])
-  #      except : 
+  #      except :
  #           1+1
 #print(message)
 #for i in range(len(message)):
@@ -93,4 +93,4 @@ pprint.pprint(message)
 tempfile.close()
 
 #pprint.pprint (message)
-mail.outlooksimple(sender, tto, login, password_email, subject, False, str(message)) 
+mail.outlooksimple(sender, tto, login, password_email, subject, False, str(message))

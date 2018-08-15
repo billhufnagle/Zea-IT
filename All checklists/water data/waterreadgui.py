@@ -91,7 +91,7 @@ class Data_entry:
 
         self.errorclear()
         self.workerempty=self.worker.get()
-        self.db = MySQLdb.connect("localhost", "root", "password", "datacollection")
+        self.db = MySQLdb.connect("databaseserver", "root", "password", "datacollection")
 
         self.cursor = self.db.cursor()
 

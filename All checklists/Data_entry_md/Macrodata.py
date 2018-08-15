@@ -128,7 +128,7 @@ class Data_entry:
         self.emptycmnt=self.cldtempcmnt.get()
         self.emptynum=self.grwrm.get()
 
-        self.db = MySQLdb.connect("localhost", "root", "password", "datacollection")
+        self.db = MySQLdb.connect("databaseserver", "root", "password", "datacollection")
 
         self.cursor = self.db.cursor()
         self.initialshold=self.initials.get()

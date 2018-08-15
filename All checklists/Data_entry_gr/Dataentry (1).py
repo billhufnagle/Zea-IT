@@ -184,7 +184,7 @@ finished SUBMITTING all Racks", bg="navy", fg="white")
 
         self.errorclear()
         #set for the dataentry laptop accessing the datacollection db
-        self.db = MySQLdb.connect("localhost", "root", "password", "datacollection")
+        self.db = MySQLdb.connect("databaseserver", "root", "password", "datacollection")
 
         self.cursor = self.db.cursor()
 

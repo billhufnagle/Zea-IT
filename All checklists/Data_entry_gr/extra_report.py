@@ -12,7 +12,7 @@ file=False
 message="This is where the info will be"
 
 
-hostname="localhost"
+hostname="databaseserver"
 user="root"
 password="password"
 dbname="datacollection"

@@ -10,7 +10,7 @@
 
 
   <database category="info">
-    <hostname>localhost</hostname>
+    <hostname>databaseserver</hostname>
     <user>bhufnagle</user>
     <password>p1assword</password>
     <dbname>datacollection</dbname>

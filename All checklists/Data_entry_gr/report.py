@@ -13,7 +13,7 @@ file=False
 message="This is where the info will be"
 
 
-hostname="localhost"
+hostname="databaseserver"
 user="bhufnagle"
 password_db="p1assword"
 dbname="datacollection"

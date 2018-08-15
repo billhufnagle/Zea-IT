@@ -41,7 +41,7 @@ So basic structure:
   </email>
 
   <database category="info">
-    <hostname>dataentrylaptop</hostname><!--only works from a laptop Where
+    <hostname>databaseserver</hostname><!--only works from a laptop Where
     dataentrylaptop is saved in etc\hosts file-->
     <user>bhufnagle</user>
     <password>p1assword</password>
