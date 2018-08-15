@@ -37,6 +37,7 @@ user=config.database.user.text
 password_db=config.database.password.text
 dbname=config.database.dbname.text
 Rows=rowslist
+Date=config.database.date.text
 
 db = MySQLdb.connect(hostname, user, password_db, dbname)
 
@@ -48,14 +49,21 @@ dateline="="+current.strftime("'%Y-%m-%d'")
 
 message=''
 
+message+='Room, Rack, pH, DO, Temp, PPM, Initials, Date'
+
 for i in Rows:
     message+='\n'
     message+=str(i)+'\n'
-    executeline="select * from waterreadings where\
- Rack="+str(i)+" and Date(Date)"+dateline
+    executeline="select Room, Rack, pH, DO, Temp, PPM, Initials, Date(Date) from\
+ waterreadings where Rack="+str(i)+" and Date(Date)"+dateline
     cursor.execute(executeline)
-    message+=str(cursor.fetchall())
-
+    holding=cursor.fetchall()
+    print (holding)
+    if holding != ():
+        current=list(holding[0])
+        current[7]=current[7].strftime("%m/%d/%Y")
+        for i in range(len(current)):
+            message+=str(current[i])+",   "
 pprint.pprint(message)
 
 print (tto)
